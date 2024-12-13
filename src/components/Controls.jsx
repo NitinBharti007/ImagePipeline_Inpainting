@@ -14,7 +14,7 @@ const Controls = ({ brushSize, setBrushSize, onClearCanvas, onExportMask }) => {
         onChange={(e, newValue) => setBrushSize(newValue)}
         sx={{
           width: "80%",
-          maxWidth: "400px", // Limit the max width for large screens
+          maxWidth: "400px",
           margin: "auto",
           "& .MuiSlider-rail": {
             backgroundColor: "#ccc",
@@ -29,7 +29,7 @@ const Controls = ({ brushSize, setBrushSize, onClearCanvas, onExportMask }) => {
         display="flex"
         justifyContent="center"
         gap={2}
-        flexDirection={{ xs: "column", sm: "row" }} // Stack buttons on small screens
+        flexDirection={{ xs: "column", sm: "row" }}
         alignItems="center"
       >
         <Tooltip title="Clear the canvas" arrow>
@@ -42,7 +42,7 @@ const Controls = ({ brushSize, setBrushSize, onClearCanvas, onExportMask }) => {
               fontSize: "14px",
               borderRadius: "8px",
               textTransform: "none",
-              width: { xs: "70%", sm: "auto" }, // Full width on small screens
+              width: { xs: "70%", sm: "auto" },
             }}
           >
             Clear Canvas
@@ -58,7 +58,7 @@ const Controls = ({ brushSize, setBrushSize, onClearCanvas, onExportMask }) => {
               fontSize: "14px",
               borderRadius: "8px",
               textTransform: "none",
-              width: { xs: "70%", sm: "auto" }, // Full width on small screens
+              width: { xs: "70%", sm: "auto" },
             }}
           >
             Export Mask

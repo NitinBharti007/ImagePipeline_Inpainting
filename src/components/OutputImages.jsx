@@ -11,14 +11,14 @@ const OutputImages = ({ image }) => {
         display="flex" 
         justifyContent="center" 
         gap={3} 
-        flexWrap="wrap" // Ensures images wrap on smaller screens
+        flexWrap="wrap"
         sx={{
           '& img': {
-            maxWidth: '100%', // Ensure images are responsive
-            width: '250px', // Set a base width for larger screens
+            maxWidth: '100%',
+            width: '250px', 
             border: '2px solid #ccc',
             borderRadius: '8px',
-            objectFit: 'cover', // Maintain aspect ratio
+            objectFit: 'cover',
           },
         }}
       >

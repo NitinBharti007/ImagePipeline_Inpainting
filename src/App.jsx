@@ -63,7 +63,7 @@ const App = () => {
               fontSize: "14px",
               borderRadius: "8px",
               textTransform: "none",
-              width: { xs: "70%", sm: "auto" }, // Full width on small screens
+              width: { xs: "70%", sm: "auto" },
             }}>
             Upload Image
             <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
@@ -97,7 +97,7 @@ const App = () => {
           padding: "10px 0",
           position: "relative",
           bottom: 0,
-          width: "100%",  // Ensure it spans the full width
+          width: "100%", 
         }}
       >
         <Typography variant="body2" align="center">
