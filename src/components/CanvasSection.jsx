@@ -23,6 +23,18 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
     maskCtx.fill();
   };
 
+  const handleMouseDraw = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    handleDraw(x, y);
+  };
+
   const handleTouchDraw = (e) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -40,11 +52,11 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
     const canvas = canvasRef.current;
 
     const handleTouchMove = (e) => {
-      e.preventDefault(); // Prevent scrolling
+      e.preventDefault(); // Prevent scrolling while drawing
       handleTouchDraw(e);
     };
 
-    // Add touchmove event listener with { passive: false }
+    // Add event listeners for touch and mouse interactions
     canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
 
     // Cleanup event listener on unmount
@@ -59,6 +71,7 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
     const ctx = canvas.getContext("2d");
     const maskCtx = maskCanvas.getContext("2d");
 
+    // Set canvas size to the image dimensions when the image is loaded
     const img = new Image();
     img.src = image;
     img.onload = () => {
@@ -122,6 +135,7 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
             width: "100%",
             height: "auto",
           }}
+          onMouseMove={(e) => e.buttons === 1 && handleMouseDraw(e)}
         />
         <canvas ref={maskCanvasRef} style={{ display: "none" }} />
       </Box>
