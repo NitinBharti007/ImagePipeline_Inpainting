@@ -4,18 +4,11 @@ import { Box, Typography } from "@mui/material";
 const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
 
-  const handleDraw = (e) => {
+  const handleDraw = (x, y) => {
     const canvas = canvasRef.current;
     const maskCanvas = maskCanvasRef.current;
     const ctx = canvas.getContext("2d");
     const maskCtx = maskCanvas.getContext("2d");
-
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
 
     // Draw the brush on the canvas
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
@@ -30,13 +23,42 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
     maskCtx.fill();
   };
 
+  const handleTouchDraw = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const touch = e.touches[0];
+    const x = (touch.clientX - rect.left) * scaleX;
+    const y = (touch.clientY - rect.top) * scaleY;
+
+    handleDraw(x, y);
+  };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    const handleTouchMove = (e) => {
+      e.preventDefault(); // Prevent scrolling
+      handleTouchDraw(e);
+    };
+
+    // Add touchmove event listener with { passive: false }
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    // Cleanup event listener on unmount
+    return () => {
+      canvas.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [canvasRef, handleTouchDraw]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const maskCanvas = maskCanvasRef.current;
     const ctx = canvas.getContext("2d");
     const maskCtx = maskCanvas.getContext("2d");
 
-    // Set canvas size to the image dimensions when the image is loaded
     const img = new Image();
     img.src = image;
     img.onload = () => {
@@ -70,7 +92,7 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
         borderRadius: "8px",
         backgroundColor: "#fff",
         width: "80%",
-        maxWidth: "800px", // Max width to make it responsive
+        maxWidth: "800px",
         margin: "auto",
       }}
     >
@@ -82,26 +104,24 @@ const CanvasSection = ({ image, canvasRef, maskCanvasRef, brushSize }) => {
         position="relative"
         width="100%"
         height="auto"
-        overflow="hidden" // Ensures the canvas doesn't overflow
+        overflow="hidden"
         sx={{
-          width: "100%", // Full width for responsiveness
-          maxWidth: "700px", // Max width for larger screens
-          height: "auto", // Automatically adjust the height based on the image aspect ratio
+          width: "100%",
+          maxWidth: "700px",
+          height: "auto",
         }}
       >
         <canvas
           ref={canvasRef}
           style={{
             background: `url(${image}) no-repeat center/contain`,
-            backgroundSize: "contain", // Ensures the image fits the canvas size
+            backgroundSize: "contain",
             border: "2px solid #ccc",
             cursor: "crosshair",
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-            width: "100%", // Ensure canvas fills the container
-            height: "auto", // Adjust height proportionally to image
-            objectFit: "contain", // Ensures image fits within the canvas
+            width: "100%",
+            height: "auto",
           }}
-          onMouseMove={(e) => e.buttons === 1 && handleDraw(e)} // Draw when mouse is moved
         />
         <canvas ref={maskCanvasRef} style={{ display: "none" }} />
       </Box>
