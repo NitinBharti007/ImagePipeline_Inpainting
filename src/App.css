@@ -1,0 +1,26 @@
+/* App.css */
+
+@media (max-width: 768px) {
+  .MuiContainer-root {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .MuiButton-root {
+    width: 100%;
+  }
+
+  img {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  canvas {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .MuiTypography-root {
+    font-size: 1rem;
+  }
+}
